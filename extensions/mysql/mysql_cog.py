@@ -8,10 +8,9 @@ class MySQLCog(MDBCog):
     _name: str = 'mysql'
     __conn = None
 
-
     @property
-    def cursor(self) -> mysql.connector:
-        """Get or create a new buffered DB cursor connection"""
+    def connection(self) -> mysql.connector:
+        """Get or create a new buffered DB connection connection"""
         if not self.__conn:
             self.__conn = mysql.connector.connect(**self._settings)
 
@@ -21,7 +20,6 @@ class MySQLCog(MDBCog):
             self.__conn = mysql.connector.connect(**self._settings)
 
         return self.__conn
-
 
     @property
     def default_settings(self) -> dict:
@@ -33,7 +31,6 @@ class MySQLCog(MDBCog):
             'password': None,
             'db': None
         }
-
 
     def get_required_extensions(self) -> list[str]:
         """Get a list of extensions that are required to run this cog"""
