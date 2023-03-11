@@ -21,14 +21,14 @@ class RoleManager:
         """Create the DB tables if they do not exist"""
         with self.__conn.cursor() as cursor:
             cursor.execute(CREATE_TABLES_IF_NOT_EXISTS_QUERY)
-            self.__conn.commit()
 
     async def give_role_to_user(self, role_name: str, user: Member, author: Member, guild: Guild) -> None:
         """Give a role to user. Create it if it does not exist"""
         with self.__conn.cursor() as cursor:
             # Create role if it does not exist
             role = get(guild.roles, name=role_name)
-            db_role = cursor.execute(SELECT_ROLE_QUERY, [role_name]).fetchone()
+            cursor.execute(SELECT_ROLE_QUERY, [role_name])
+            db_role = cursor.fetchone()
             if not role:
                 role = await guild.create_role(name=role_name, colour=Colour.random())
             if not db_role:
@@ -42,9 +42,9 @@ class RoleManager:
                     role.id
                 ]
             )
+            self.__conn.commit()
 
             await user.add_roles(role)
-            self.__conn.commit()
 
     async def remove_role_from_user(self, role: Role, role_author_id: int, user: Member) -> None:
         """Remove a role from a user. If the role becomes unused, delete it"""
@@ -57,7 +57,7 @@ class RoleManager:
             if not role.members:
                 cursor.execute(DELETE_UNUSED_ROLE_QUERY, [role.id])
                 await role.delete()
-
+            
             self.__conn.commit()
 
     def select_or_create_member(self, member: Member):

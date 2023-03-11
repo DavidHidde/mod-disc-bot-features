@@ -6,6 +6,7 @@ from typing import Union
 
 import discord
 from discord import Interaction, app_commands
+from copy import deepcopy
 
 from .image_formatter import ImageFormatter
 from .template_image import TemplateImage
@@ -40,7 +41,7 @@ class WhereCog(MDBCog):
         await ctx.response.defer()  # Defer since this might take long
 
         try:
-            template_image = random.choice(self.images)
+            template_image = deepcopy(random.choice(self.images))
             image_formatter = ImageFormatter()
             image = image_formatter.apply_text_on_image(text, template_image)
 

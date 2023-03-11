@@ -1,5 +1,6 @@
 import mysql.connector
 
+from copy import deepcopy
 from ...mdb_cog import MDBCog
 
 
@@ -11,13 +12,19 @@ class MySQLCog(MDBCog):
     @property
     def connection(self) -> mysql.connector:
         """Get or create a new buffered DB connection connection"""
+        # Remove generated settings
+        conn_settings = deepcopy(self._settings)
+        for key in super().default_settings:
+            del conn_settings[key]
+        del conn_settings['class']
+        
         if not self.__conn:
-            self.__conn = mysql.connector.connect(**self._settings)
+            self.__conn = mysql.connector.connect(**conn_settings)
 
         # Reconnect
         if not self.__conn.is_connected():
             self.__conn.close()
-            self.__conn = mysql.connector.connect(**self._settings)
+            self.__conn = mysql.connector.connect(**conn_settings)
 
         return self.__conn
 
@@ -29,7 +36,8 @@ class MySQLCog(MDBCog):
             'host': 'mysql-db',
             'user': None,
             'password': None,
-            'db': None
+            'db': None,
+            'autocommit': False
         }
 
     def get_required_extensions(self) -> list[str]:

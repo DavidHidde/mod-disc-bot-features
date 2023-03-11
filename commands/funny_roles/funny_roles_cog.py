@@ -89,8 +89,8 @@ class FunnyRolesCog(MDBCog):
     async def role_credit(self, ctx: discord.Interaction):
         """Check how many roles you can still give away"""
         await ctx.response.defer()
-        role_manager = RoleManager(self.get_db_connection())
         try:
+            role_manager = RoleManager(self.get_db_connection())
             role_list = role_manager.get_given_roles(ctx.user.id)
             count = len(role_list)
 
@@ -116,5 +116,6 @@ class FunnyRolesCog(MDBCog):
         if self.__conn is None:
             self.__conn = self._bot.get_cog('mysql').connection
             RoleManager(self.__conn).create_db_tables_if_not_exists()
+            self.__conn = self._bot.get_cog('mysql').connection # Just to be sure
             
         return self.__conn

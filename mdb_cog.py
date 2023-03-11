@@ -22,13 +22,14 @@ class MDBCog(Cog):
         self._bot = bot
         self._settings = settings
         self._logger = logging.getLogger(self.__class__.__name__)
+        self.__cog_name__=self._name
 
     @property
     def assets_path(self) -> str:
         """Get the custom assets path. If the path does not exist, creates the path"""
-        path = f'/usr/assets/{self.__class__.__name__}'
+        path = f'/usr/assets/{self._name}'
 
-        if os.path.exists(path):
+        if not os.path.exists(path):
             os.mkdir(path)
 
         return path
