@@ -1,1 +1,1 @@
-from where_cog import WhereCog as whereCog
+from .where_cog import WhereCog as whereCog

@@ -1,1 +1,1 @@
-from mysql_cog import MySQLCog as mysqlCog
+from .mysql_cog import MySQLCog as mysqlCog

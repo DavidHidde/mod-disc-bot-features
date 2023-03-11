@@ -9,7 +9,7 @@ services:
     volumes:
       - mysqldata:/var/lib/mysql
     networks:
-      - bot-network
+      - mod-disc-bot_bot-network
     env_file:
       - mysql.env
 
@@ -18,13 +18,13 @@ services:
     container_name: adminer
     restart: always
     networks:
-      - bot-network
+      - mod-disc-bot_bot-network
     ports:
       - 8080:8080
 
 networks:
-  bot-network:
-    driver: bridge
+  mod-disc-bot_bot-network:
+    external: true
 
 volumes:
   mysqldata:

@@ -3,7 +3,7 @@ from io import BytesIO
 from aiohttp import ClientSession
 from discord import File, Interaction, app_commands
 
-from mdb_cog import MDBCog
+from ...mdb_cog import MDBCog
 
 
 class QuoteCog(MDBCog):
@@ -12,6 +12,7 @@ class QuoteCog(MDBCog):
     QUOTE_URL: str = 'https://inspirobot.me/api?generate=true'
     EXPECTED_URL_REGEX: str = r'https://generated\.inspirobot\.me/a/^\.jpg$'
 
+    _name: str = 'quote'
 
     @app_commands.command()
     async def quote(self, ctx: Interaction) -> None:

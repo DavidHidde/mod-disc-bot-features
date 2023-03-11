@@ -5,8 +5,8 @@ import mysql.connector
 from discord import Member, Role, app_commands
 from discord.ext.commands import Bot
 
-from commands.funny_roles.role_manager import RoleManager
-from mdb_cog import MDBCog
+from .role_manager import RoleManager
+from ...mdb_cog import MDBCog
 
 
 class FunnyRolesCog(MDBCog):
@@ -15,11 +15,8 @@ class FunnyRolesCog(MDBCog):
     __KEYWORD_MAX_ROLES: str = 'max_roles'
     __KEYWORD_BANNED_ROLES: str = 'banned_roles'
 
-    def __init__(self, bot: Bot, settings: dict):
-        """Create DB tables if they don't exist"""
-        super().__init__(bot, settings)
-        role_manager = RoleManager(self.get_db_connection())
-        role_manager.create_db_tables_if_not_exists()
+    _name: str = 'funny_roles'
+    __conn: mysql.connector = None
 
     @property
     def default_settings(self) -> dict:
@@ -28,7 +25,6 @@ class FunnyRolesCog(MDBCog):
             **super().default_settings,
             self.__KEYWORD_MAX_ROLES: 10,
             self.__KEYWORD_BANNED_ROLES: [],
-
         }
 
     def get_required_extensions(self) -> list[str]:
@@ -116,4 +112,9 @@ class FunnyRolesCog(MDBCog):
             return await ctx.followup.send(content=f"Something went wrong while checking role credit")
 
     def get_db_connection(self) -> mysql.connector:
-        return self._bot.get_cog('mysql').connection
+        """Lazy connection getter. Creates DB tables if needed upon first call"""
+        if self.__conn is None:
+            self.__conn = self._bot.get_cog('mysql').connection
+            RoleManager(self.__conn).create_db_tables_if_not_exists()
+            
+        return self.__conn

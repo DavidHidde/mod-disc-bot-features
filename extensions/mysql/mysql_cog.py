@@ -1,6 +1,6 @@
 import mysql.connector
 
-from mdb_cog import MDBCog
+from ...mdb_cog import MDBCog
 
 
 class MySQLCog(MDBCog):

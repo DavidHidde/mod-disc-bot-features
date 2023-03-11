@@ -1,1 +1,1 @@
-from quote_cog import QuoteCog as quoteCog
+from .quote_cog import QuoteCog as quoteCog

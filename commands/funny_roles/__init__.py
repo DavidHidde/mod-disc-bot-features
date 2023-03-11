@@ -1,1 +1,1 @@
-from funny_roles_cog import FunnyRolesCog as funny_rolesCog
+from .funny_roles_cog import FunnyRolesCog as funny_rolesCog

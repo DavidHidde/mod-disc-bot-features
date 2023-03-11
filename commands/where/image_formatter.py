@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 
-from commands.where.template_image import TemplateImage
+from .template_image import TemplateImage
 
 
 class ImageFormatter:

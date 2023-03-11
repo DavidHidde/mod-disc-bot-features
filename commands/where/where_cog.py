@@ -7,14 +7,15 @@ from typing import Union
 import discord
 from discord import Interaction, app_commands
 
-from commands.where.image_formatter import ImageFormatter
-from commands.where.template_image import TemplateImage
-from mdb_cog import MDBCog
+from .image_formatter import ImageFormatter
+from .template_image import TemplateImage
+from ...mdb_cog import MDBCog
 
 
 class WhereCog(MDBCog):
     """Where cog which can send funny images with funny text on it"""
 
+    _name: str = 'where'
     __images: Union[list[TemplateImage], None] = None
 
 
